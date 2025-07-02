@@ -1,4 +1,3 @@
-<!-- filepath: c:\xampp\htdocs\Test\resources\views\auth\dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -113,22 +112,31 @@
             font-size: 1.1rem;
         }
         .dashboard-cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    justify-content: center;      /* يجعل الشبكة في المنتصف */
-    align-items: center;
-    margin-bottom: 18px;
-    width: 100%;
-}
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+            justify-items: stretch;
+            align-items: stretch;
+            margin-bottom: 18px;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         @media (max-width: 700px) {
             .dashboard-container {
                 margin: 40px 8px 0 8px;
                 padding: 18px 6px 10px 6px;
             }
             .dashboard-cards {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 12px;
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 400px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
             }
         }
         .dashboard-card {
@@ -136,8 +144,8 @@
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.08);
             padding: 28px 24px;
-            min-width: 180px;
-            max-width: 270px;
+            min-width: 0;
+            max-width: 100%;
             text-align: center;
             margin-bottom: 0;
             transition: box-shadow 0.2s, transform 0.15s, background 0.2s, color 0.2s;
@@ -198,7 +206,7 @@
                     <img src="{{ asset('images/default-user.png') }}" alt="الصورة الشخصية" />
                 @endif
             </div>
-            <h1>مرحبا بك في لوحة التحكم kkk</h1>
+            <h1>مرحبا بك في لوحة التحكم </h1>
             <p>هنا يمكنك مشاهدة معلومات حسابك وإدارة عملياتك</p>
         </div>
         <div class="dashboard-cards">
@@ -229,28 +237,30 @@
             @csrf
         </form>
     </div>
-    <script>
+       <script>
         // Icon SVGs
         const moon = `<svg viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 0111.21 3a7 7 0 100 18A9 9 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
         const sun = `<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 
         function setIcon() {
-            document.getElementById('toggleModeBtn').innerHTML = document.body.classList.contains('dark') ? sun : moon;
+            const btn = document.getElementById('toggleModeBtn');
+            if (!btn) return;
+            btn.innerHTML = document.body.classList.contains('dark') ? sun : moon;
         }
         function toggleMode() {
             document.body.classList.toggle('dark');
             localStorage.setItem('dashboardMode', document.body.classList.contains('dark') ? 'dark' : 'light');
             setIcon();
         }
-        (function() {
-            // Dark-Mode ist jetzt Standard!
+
+        document.addEventListener('DOMContentLoaded', function() {
             if(localStorage.getItem('dashboardMode') === 'light') {
                 document.body.classList.remove('dark');
             } else {
                 document.body.classList.add('dark');
             }
             setIcon();
-        })();
+        });
     </script>
 </body>
 </html>
